@@ -1,10 +1,12 @@
 import pandas as pd
 import os
 import sys
+import numpy as np
 
 def read_input():
     if len(sys.argv)!=2:
-        read_file='input_tmp'
+        print("No INPUT FILE name")
+        sys.exit()
     else:
         read_file=sys.argv[1]
 
@@ -174,3 +176,80 @@ def generate_input_label_file(input_file):
                            
     df=df.reset_index(drop=True)
     df.to_csv(input_file, index=0)
+
+    
+##################################################################
+##################################################################
+def generate_idlist(group, fold):
+    input_file="input_label_spect.csv"
+    if os.path.isfile(input_file)==False:
+        gen_input.generate_input_label_file(input_file)
+    
+    df = pd.read_csv(input_file)
+    df=df.dropna(subset=['VISINTRP'])
+    df=df.dropna(subset=['CAUDATE_R'])
+    df=df.dropna(subset=['NHY_0'])
+    df=df.dropna(subset=['MDS3_0'])
+    df=df.reset_index(drop=True)
+    
+    ### ---------- Select only group data --------------
+    df=df[df['Group'].isin(group)]
+    df=df[df['NHY_0'].isin([0,1,2,3,4,5])]
+    df=df.reset_index(drop=True)
+    
+    ### ----------- Only subject with the first visit will be used ---------------
+    lst=[]
+    for i in range(len(df['Subject'].unique())):
+        ii = df['Subject'].unique()[i]
+        tmp=df.loc[df['Subject'] == ii]
+        e=[]
+        for j in range(len(tmp)):
+            ii=tmp.index[j]
+            nd2=tmp.loc[ii, 'Acq Date']
+            e.append(nd2)
+    
+        ii=tmp.index[e.index(min(e))]
+        lst.append(ii)
+    
+    df=df.ix[lst]
+    df=df.reset_index(drop=True)
+    
+    ### ----------- Only subject that has the progression score will be used ---------------
+    ## lst=[]
+    ## for i in range(len(df)):
+    ##     if df.loc[i, 'INFODT_1']== df.loc[i, 'INFODT_0']:
+    ##         lst.append(i)
+    ## print("SAME DATE ROW NUMBER",lst)
+    ## df=df.drop(lst)   
+    ## df=df.reset_index(drop=True)
+    
+    print('Number of Subject=',df['Subject'].nunique())
+    print(df['Group'].value_counts())
+    
+    #--------- initialize the data filename list and labels list
+    n_dat = df.shape[0]
+    nn = int(n_dat/10)+1
+    tmp = np.zeros(n_dat, dtype=int)
+    fname = np.zeros((10,nn), dtype=int)
+    n_group=np.zeros((10,2), dtype=int)
+    df = df.sample(frac=1, random_state=1).reset_index(drop=True)
+    
+    for i in range(n_dat):
+        ix=i%10
+        iy=int(i/10)
+        fname[ix][iy]=int(df.loc[i, 'Image Data ID'])
+        n_group[ix][group.index(df.loc[i, 'Group'])] +=1
+    
+    ##-------- Generate 10 fold data
+    
+    fname=np.roll(fname, fold, axis=0)
+    n_group=np.roll(n_group, fold, axis=0)
+    
+    fname_0=np.reshape(fname[0:8], nn*8)
+    fname_1=np.reshape(fname[8], nn)
+    fname_2=np.reshape(fname[9], nn)
+    n_group_0=np.sum(n_group[0:8], axis=0)
+    n_group_1=n_group[8]
+    n_group_2=n_group[9]
+    
+    return fname_0, n_group_0, fname_1, n_group_1, fname_2, n_group_2, df
