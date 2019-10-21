@@ -183,7 +183,7 @@ def generate_input_label_file(input_file):
 def generate_idlist(group, fold):
     input_file="input_label_spect.csv"
     if os.path.isfile(input_file)==False:
-        gen_input.generate_input_label_file(input_file)
+        generate_input_label_file(input_file)
     
     df = pd.read_csv(input_file)
     df=df.dropna(subset=['VISINTRP'])
