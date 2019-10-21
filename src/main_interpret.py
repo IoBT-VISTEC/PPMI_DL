@@ -182,6 +182,11 @@ interpret_name=sys.argv[2]
 if (interpret_name=='Deep_LIFT'):
     preds = model.predict(Data_2)
     Data_2_map=gen_interpret.inp_deeplift(PathOutput, Data_2, Labels_2, preds, n_model)
+    
+if (interpret_name=='Grad-CAM'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model)
+
 
 #### ------------(END) EDIT THIS TO CHANGE MODEL --------------------
 
