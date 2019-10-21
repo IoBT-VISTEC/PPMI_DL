@@ -111,26 +111,6 @@ def draw_spect_contour(input_img, binary):
     cv2.drawContours(im, contour_new, -1, (255, 0, 0), 1)
     return im
 
-def image_resize(img,nx,ny,nz):
-    width = ny
-    height = nz
-    img1 = np.zeros((img.shape[0], width, height))
-
-    for idx in range(img.shape[0]):
-        tmp = img[idx, :, :]
-        img_sm = cv2.resize(tmp, (height, width), interpolation=cv2.INTER_LINEAR)
-        img1[idx, :, :] = img_sm
-
-    width = nx
-    height = ny
-    img2 = np.zeros((width, height, img1.shape[2]))
-
-    for idx in range(img1.shape[2]):
-        tmp = img1[:, :, idx]
-        img_sm = cv2.resize(tmp, (height, width), interpolation=cv2.INTER_LINEAR)
-        img2[:, :, idx] = img_sm
-    return img2
-
 
 ### Plot image using matplotlib without boundary
 def plot_without_boundary(imgtoplot, outname):

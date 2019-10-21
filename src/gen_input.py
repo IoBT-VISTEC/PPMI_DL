@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 def read_input():
-    if len(sys.argv)!=2:
+    if len(sys.argv)<2:
         print("No INPUT FILE name")
         sys.exit()
     else:
