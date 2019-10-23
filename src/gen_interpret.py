@@ -1,5 +1,7 @@
 import numpy as np
 
+
+### -------------Deep LIFT ----------------###
 import sys
 sys.path.append('.')
 import deeplift
@@ -62,7 +64,7 @@ def inp_deeplift(PathOutput, Data_2, Labels_2, preds, n_model):
     return Data_2_map
 
 
-### -------------GRAD-CAM ----------------###
+### -------------GRAD-CAM, Guided Backprop and Guided GC ----------------###
 from keras.preprocessing import image
 from keras.layers.core import Lambda
 from keras.models import Sequential, Model, load_model
@@ -220,3 +222,73 @@ def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_n
                 
     return Data_2_map
 
+### -------------Saliency map ----------------###
+
+from keras.preprocessing import image
+from keras.layers.core import Lambda
+from keras.models import Sequential, Model
+from tensorflow.python.framework import ops
+import keras.backend as K
+import tensorflow as tf
+import keras
+
+def compile_saliency_map(model):
+    """
+    Compiles a function to compute the saliency maps and predicted classes
+    for a given minibatch of input images.
+    """
+    inp = model.layers[0].input
+    outp = model.layers[-1].output
+    max_outp = K.max(outp, axis=1)
+    saliency = K.gradients(keras.backend.sum(max_outp), inp)[0]
+    max_class = K.argmax(outp, axis=1)
+    return K.function([inp], [saliency])
+
+def inp_saliencymap(PathOutput, Data_2, Labels_2, preds, n_model, model):
+    ## Generate saliency map
+    saliency_map_fn  = compile_saliency_map(model)
+    
+    # Generate the heatmap
+    Data_2_map = np.zeros(Data_2.shape[0:4])
+    
+    for nn in range(Data_2.shape[0]):
+        Data_test=Data_2[nn:nn+1]
+        nlabels=np.argmax(Labels_2[nn])
+        class_idx = np.argmax(preds[nn])
+        
+        
+        ## Generate saliency map
+        saliency_map = saliency_map_fn([Data_test])
+        saliency_map =np.array(saliency_map[0])
+        
+        Data_2_map[nn] =saliency_map[0,:,:,:,0]
+        
+    return Data_2_map
+        
+
+### -------------SHAP----------------###
+
+import shap
+
+def inp_shap(PathOutput, Data_2, Labels_2, preds, n_model, model, Data_0):
+    # Generate SHAP image
+    np.random.seed(0)
+    background = Data_0[np.random.choice(Data_0.shape[0], 12, replace=False)]
+    e = shap.DeepExplainer(model, background)
+    
+    # Generate the heatmap
+    Data_2_map = np.zeros(Data_2.shape[0:4])
+    
+    for nn in range(Data_2.shape[0]):
+        Data_test=Data_2[nn:nn+1]
+        nlabels=np.argmax(Labels_2[nn])
+        class_idx = np.argmax(preds[nn])
+        
+        
+        # Generate SHAP image
+        shap_values = e.shap_values(Data_test)
+        shap_map=shap_values[class_idx][0][:,:,:,0]
+        
+        Data_2_map[nn] = shap_map
+        
+    return Data_2_map

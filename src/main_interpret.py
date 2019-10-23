@@ -193,8 +193,15 @@ if (interpret_name=='Guided_Backprop'):
     
 if (interpret_name=='Guided_GC'):
     preds = model.predict(Data_2)
-    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)    
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)
+    
+if (interpret_name=='Saliency'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_saliencymap(PathOutput, Data_2, Labels_2, preds, n_model, model)
 
+if (interpret_name=='SHAP'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_shap(PathOutput, Data_2, Labels_2, preds, n_model, model, Data_0)
 
 #### ------------(END) EDIT THIS TO CHANGE MODEL --------------------
 
