@@ -185,7 +185,15 @@ if (interpret_name=='Deep_LIFT'):
     
 if (interpret_name=='Grad-CAM'):
     preds = model.predict(Data_2)
-    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model)
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)
+    
+if (interpret_name=='Guided_Backprop'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)
+    
+if (interpret_name=='Guided_GC'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)    
 
 
 #### ------------(END) EDIT THIS TO CHANGE MODEL --------------------

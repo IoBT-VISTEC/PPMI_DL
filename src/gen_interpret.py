@@ -173,7 +173,7 @@ def grad_cam(input_model, image, category_index, layer_name):
     return heatmap
 
 
-def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model):
+def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name):
     if n_model==0 or n_model==1:
         deeplift_layer0="input1_0"
         deeplift_layer1="dense_2_0"
@@ -210,8 +210,13 @@ def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model):
     
         gradcam = gradcam[:,:,:,0]
         saliency = saliency[0,:,:,:,0]
-        
-        Data_2_map[nn] = img_h
-        
+
+        if (interpret_name=='Grad-CAM'):
+             Data_2_map[nn] = img_h
+        if (interpret_name=='Guided_Backprop'):
+             Data_2_map[nn] = saliency
+        if (interpret_name=='Guided_GC'):
+             Data_2_map[nn] = gradcam
+                
     return Data_2_map
 
