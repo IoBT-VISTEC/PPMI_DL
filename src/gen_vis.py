@@ -84,7 +84,3 @@ def plt_epoch(dim, y_pred, y_true, PathOutput):
 def cls_rep(y_pred, y_true, target_names):
     print(classification_report(np.argmax(y_true, axis=1), np.argmax(y_pred, axis=1), target_names=target_names,digits=4))
     print(confusion_matrix(np.argmax(y_true, axis=1), np.argmax(y_pred, axis=1)))
-    
-def cls_rep_nm(y_pred, y_true, target_names):
-    print(classification_report(y_true, y_pred, target_names=target_names,digits=4))
-    print(confusion_matrix(y_true, y_pred))
