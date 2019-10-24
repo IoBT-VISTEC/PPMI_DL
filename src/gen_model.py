@@ -13,8 +13,6 @@ from keras.utils import np_utils
 from keras.layers import Input, Embedding, LSTM, Dense
 from keras.models import Model
 
-
-
 def model_cnn3D_0(input_shape, dim, lr):
     Input_img = Input(shape=input_shape, name='input1')
     x = Conv3D(16, kernel_size=(7,7,7), strides=(4,4,4))(Input_img)
@@ -34,7 +32,6 @@ def model_cnn3D_0(input_shape, dim, lr):
     x = Dense(dim)(x)
     main_output = Activation('softmax', name='main_output')(x)
     
-    #with tf.device('/cpu:0'):
     model = Model(inputs=Input_img, outputs=main_output)
     
     sgd = SGD(lr=lr, decay=0, momentum=0.9, nesterov=True)
@@ -73,7 +70,6 @@ def model_cnn3D_1(input_shape, dim, lr):
     return model 
 
 def model_cnn3D_2(input_shape, dim, lr):
-    #np.random.seed(1337)
     Input_img = Input(shape=(input_shape), name='input1')
     x = Conv3D(16, kernel_size=(5,5,5), strides=(1,1,1))(Input_img)
     x = Activation('relu')(x)
@@ -100,7 +96,6 @@ def model_cnn3D_2(input_shape, dim, lr):
     x = Dense(dim)(x)
     main_output = Activation('softmax', name='main_output')(x)
     
-    #with tf.device('/cpu:0'):
     model = Model(inputs=Input_img, outputs=main_output)
     
     sgd = SGD(lr=lr, decay=0, momentum=0.9, nesterov=True)
@@ -141,7 +136,6 @@ def model_cnn3D_3(input_shape, dim, lr):
     x = Dense(dim)(x)
     main_output = Activation('softmax', name='main_output')(x)
     
-    #with tf.device('/cpu:0'):
     model = Model(inputs=Input_img, outputs=main_output)
     
     sgd = SGD(lr=lr, decay=0, momentum=0.9, nesterov=True)

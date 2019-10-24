@@ -88,60 +88,10 @@ if data_augmented:
     Labels_0 = np.concatenate((Labels_0, Labels_0), axis = 0)
     Labels_1 = np.concatenate((Labels_1, Labels_1), axis = 0)
 
-def my_learning_rate(epoch):
-    x=np.exp(np.log(lr_end/lr)/(epochs-1))
-    lrate=(x**epoch)*lr
-    return lrate
+## -- END for read data ----
 
-if init_train==1:
-    ##----- GENERATE MODEL FOR TRAINING
-    
-    if n_model==0:
-        model = gen_model.model_cnn3D_0(input_shape, dim, lr=lr)
-    elif n_model==1:
-        model = gen_model.model_cnn3D_1(input_shape, dim, lr=lr)
-    elif n_model==2:
-        model = gen_model.model_cnn3D_2(input_shape, dim, lr=lr)
-    elif n_model==3:
-        model = gen_model.model_cnn3D_3(input_shape, dim, lr=lr)
-
-
-    print(model.summary())
-
-    ##----- TRAIN THE MODEL
-    
-    if not os.path.exists(PathOutput):
-        os.makedirs(PathOutput)
-    else:
-        for dirName, subdirList, fileList in os.walk(PathOutput):
-            for filename in fileList:
-                os.remove(PathOutput+filename)
-    
-    logfile=PathOutput+'allnode_PIN.log'
-    csv_logger = CSVLogger(logfile)
-    filename="weights.{epoch:03d}-{val_loss:.2f}.hdf5"
-    checkpointer = ModelCheckpoint(monitor='val_loss', filepath=PathOutput+filename, verbose=1, save_best_only=True, save_weights_only=True)
-    
-    #model.set_weights(init_weights)
-     
-    checkpointer.epochs_since_last_save = 0
-    checkpointer.best = np.Inf
-    lrate = LearningRateScheduler(my_learning_rate,verbose=1)
-    model.fit(Data_0, Labels_0, epochs=epochs, batch_size=batch_size, validation_data=([Data_1,Labels_1]), 
-              callbacks=[checkpointer,csv_logger,lrate], verbose=2, class_weight=weight)
-    
-    ##----------------------- Look for the best model to evaluate
-    
-    for dirName, subdirList, fileList in os.walk(PathOutput):
-        fileList.sort()
-    tmp=fileList[len(fileList)-1]
-    print(tmp)
-    filename=PathOutput+tmp
-    model.load_weights(filename)
-    model.save(PathOutput+'best_model.hd5')
-
-else:
-    model = load_model(PathOutput+'best_model.hd5')
+## -- Load best model ------------
+model = load_model(PathOutput+'best_model.hd5')
 
 ###  ---------Evaluate best model  -------------------###
 (loss, accuracy) = model.evaluate(Data_2, Labels_2, batch_size=batch_size, verbose=2)
