@@ -1,3 +1,4 @@
+import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from keras.models import Sequential, load_model
@@ -11,11 +12,10 @@ from keras.utils import np_utils
 
 from keras.layers import Input, Embedding, LSTM, Dense
 from keras.models import Model
-import numpy as np
+
 
 
 def model_cnn3D_0(input_shape, dim, lr):
-    np.random.seed(1337)
     Input_img = Input(shape=input_shape, name='input1')
     x = Conv3D(16, kernel_size=(7,7,7), strides=(4,4,4))(Input_img)
     x = Activation('relu')(x)
@@ -43,7 +43,6 @@ def model_cnn3D_0(input_shape, dim, lr):
     return model 
 
 def model_cnn3D_1(input_shape, dim, lr):
-    np.random.seed(1337)
     Input_img = Input(shape=input_shape, name='input1')
     x = Conv3D(16, kernel_size=(7,7,7), strides=(4,4,4))(Input_img)
     x = BatchNormalization()(x)
@@ -74,7 +73,7 @@ def model_cnn3D_1(input_shape, dim, lr):
     return model 
 
 def model_cnn3D_2(input_shape, dim, lr):
-    np.random.seed(1337)
+    #np.random.seed(1337)
     Input_img = Input(shape=(input_shape), name='input1')
     x = Conv3D(16, kernel_size=(5,5,5), strides=(1,1,1))(Input_img)
     x = Activation('relu')(x)
@@ -111,7 +110,6 @@ def model_cnn3D_2(input_shape, dim, lr):
 
 
 def model_cnn3D_3(input_shape, dim, lr):
-    np.random.seed(1337)
     Input_img = Input(shape=(input_shape), name='input1')
     x = Conv3D(16, kernel_size=(5,5,5), strides=(1,1,1))(Input_img)
     x = BatchNormalization()(x)

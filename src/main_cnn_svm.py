@@ -14,8 +14,7 @@ import tensorflow as tf
 import cv2
 import scipy
 
-
-from keras.models import Sequential, load_model
+from keras.models import load_model
 from keras.callbacks import CSVLogger, ModelCheckpoint, ReduceLROnPlateau, LearningRateScheduler
 from keras.utils import np_utils
 
@@ -88,6 +87,9 @@ if data_augmented:
     Labels_0 = np.concatenate((Labels_0, Labels_0), axis = 0)
     Labels_1 = np.concatenate((Labels_1, Labels_1), axis = 0)
 
+## -- END for read data ----
+
+## -- Train model  ------------
 def my_learning_rate(epoch):
     x=np.exp(np.log(lr_end/lr)/(epochs-1))
     lrate=(x**epoch)*lr
@@ -107,7 +109,7 @@ if init_train==1:
 
 
     print(model.summary())
-
+    
     ##----- TRAIN THE MODEL
     
     if not os.path.exists(PathOutput):
@@ -147,32 +149,15 @@ else:
 (loss, accuracy) = model.evaluate(Data_2, Labels_2, batch_size=batch_size, verbose=2)
 print("[INFO] loss={:.4f}, accuracy: {:.4f}%".format(loss, accuracy * 100))
 
-y_pred=model.predict(Data_2, batch_size=batch_size)
-y_true=Labels_2
+y_pred_DL=model.predict(Data_2, batch_size=batch_size)
 
 ###----------Visualization --------------------
-gen_vis.cls_rep(y_pred, y_true,["CNN0","CNN1"])
+gen_vis.cls_rep(y_pred_DL, Labels_2,["CNN0","CNN1"])
 
 
 ###---------Machine Learning ------------------
-from sklearn.metrics import roc_auc_score
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LogisticRegression, Perceptron, SGDClassifier
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC, LinearSVC
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-
-from sklearn.model_selection import cross_val_score,train_test_split, GridSearchCV, KFold
-
-from sklearn.metrics import accuracy_score
-
-from sklearn.model_selection import cross_val_score
-from sklearn.preprocessing import LabelEncoder
-
-from sklearn.metrics import roc_curve, auc
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
+from sklearn.multiclass import OneVsRestClassifier
 
 
 if data_augmented:
@@ -182,17 +167,15 @@ if data_augmented:
     Labels_0=Labels_0[0:nn_0]
     Labels_1=Labels_1[0:nn_1]
 
-all_x = Dat_SBR_0
-all_y = np.argmax(Labels_0, axis=1)
-y_true= np.argmax(Labels_2, axis=1)
 
-lr = SVC(kernel='rbf')
-lr.fit(all_x, all_y)
-y_pred=lr.predict(Dat_SBR_2)
+classifier = OneVsRestClassifier(SVC(kernel='rbf'))
+y_pred_SVM = classifier.fit(Dat_SBR_0, Labels_0).decision_function(Dat_SBR_2)
 
 print("############ SVM ")
-gen_vis.cls_rep_nm(y_pred, y_true, ["SVM0","SVM1"])
+gen_vis.cls_rep(y_pred_SVM, Labels_2, ["SVM0","SVM1"])
 
-y_pred=Dat_VIS_2
+y_pred_VIS=np_utils.to_categorical(Dat_VIS_2, dim)
 print("############ Visual ")
-gen_vis.cls_rep_nm(y_pred, y_true, ["VIS0","VIS1"])
+gen_vis.cls_rep(y_pred_VIS, Labels_2, ["VIS0","VIS1"])
+
+np.savez(PathOutput+'prediction', Labels=Labels_2, DL=y_pred_DL, SVM=y_pred_SVM, VIS=y_pred_VIS)
