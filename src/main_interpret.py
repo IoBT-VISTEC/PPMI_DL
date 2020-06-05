@@ -174,6 +174,9 @@ true_map=np.zeros((2,*Data_2.shape[2:4]))
 abs_error_map0=np.zeros((2,*Data_2.shape[2:4]))
 abs_error_map1=np.zeros((2,*Data_2.shape[2:4]))
 abs_error_map2=np.zeros((2,*Data_2.shape[2:4]))
+heatmap0=np.zeros((2,*Data_2.shape[2:4]))
+heatmap1=np.zeros((2,*Data_2.shape[2:4]))
+heatmap2=np.zeros((2,*Data_2.shape[2:4]))
 
 for nn in range(Data_2.shape[0]):
     nlabels=np.argmax(Labels_2[nn])
@@ -207,6 +210,7 @@ for nn in range(Data_2.shape[0]):
     gen_image.plot_without_boundary(imgtoplot, outname)
     
     abs_error_map0[nlabels] += abs(heatmap_bin-binary)
+    heatmap0[nlabels] += heatmap_bin
     
     ####------------------- 99 percent 
     heatmap_bin, TP_bin, FP_bin, FN_bin, TN_bin, TP_num, FP_num, FN_num, TN_num = gen_image.overlay_bin(binary, gen_image.slice_ave(output_map), 0.99)
@@ -222,6 +226,7 @@ for nn in range(Data_2.shape[0]):
     gen_image.plot_without_boundary(imgtoplot, outname)
     
     abs_error_map1[nlabels] += abs(heatmap_bin-binary)
+    heatmap1[nlabels] += heatmap_bin
     
     ####------------------- 85 percent below max value
     heatmap_bin, TP_bin, FP_bin, FN_bin, TN_bin, TP_num, FP_num, FN_num, TN_num = gen_image.overlay_bin_a(binary, gen_image.slice_ave(output_map), 0.85)
@@ -238,6 +243,7 @@ for nn in range(Data_2.shape[0]):
     
     abs_error_map2[nlabels] += abs(heatmap_bin-binary)
     true_map[nlabels] += binary
+    heatmap2[nlabels] += heatmap_bin
     
     plt.close('all')
     
@@ -247,4 +253,5 @@ df_ol1.to_csv(output_file1, index=0)
 df_ol2.to_csv(output_file2, index=0)
 num_subject=np.bincount(np.argmax(Labels_2, axis=1))
 np.savez(PathOutput+'abs_error_map_'+interpret_name, num_subject=num_subject, ground_truth=true_map, case_90=abs_error_map0, case_99=abs_error_map1, case_a85=abs_error_map2)
+np.savez(PathOutput+'mean_heatmap_'+interpret_name, num_subject=num_subject, ground_truth=true_map, case_90=heatmap0, case_99=heatmap1, case_a85=heatmap2)
 print('###########  END  ##########  '+interpret_name)
