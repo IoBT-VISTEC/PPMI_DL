@@ -1,4 +1,4 @@
-Interpretation of PPMI
+# Interpretation of PPMI
 
 
 ## Introduction
@@ -40,14 +40,14 @@ python main_cnn_svm.py input
 The file name "input" can editted to specify several model parameters:
 
 ```sh
-cuda_visible_devices=0  ## Specify the GPU ID to be used
-PathOutput=out_test/cls_spect_49/  ## Specify the output directory of the saved model
-group=0  ## Specify the group to be train 0=["Control", "PD"] and 1=["PD", "SWEDD"]
-n_model=4
-epochs=30
-batch_size=4
-fold=9
-init_train=1
+cuda_visible_devices=0  ## The GPU ID to be used
+PathOutput=out_test/    ## The output directory of the saved model
+group=0                 ## The group to be train 0=["Control", "PD"] and 1=["PD", "SWEDD"]
+n_model=4               ## Model types 0 = PD-Net, 1= PD-Net + Batch Norm, 2= Deep PD-Net, 3= Deep PD-Net + Batch Norm
+epochs=30               ## Number of epochs
+batch_size=4            ## Batch size for training
+fold=9                  ## Fold number from 10-fold of data to be tested
+init_train=1            ## 0= Load the previous train model from PathOutput, 1= Train for new model
 ```
 
 ## Usage (Interpreting model)
