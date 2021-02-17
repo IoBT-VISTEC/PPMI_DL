@@ -41,12 +41,12 @@ The details of data used in this code is located in "dat_csv/SPECT_180430_4_30_2
 
 ## Usage (Training model)
 
-To train or to test the deep learning model enter the "src" folder and run:
+To train or to test the deep learning model, the users should enter the "src" folder and run:
 ```sh
 python main_cnn_svm.py input
 ```
 
-The file name "input" can editted to specify several model parameters:
+The file name "input" can be editted to specify several model parameters:
 
 ```sh
 cuda_visible_devices=0  ## The GPU ID to be used
@@ -60,7 +60,7 @@ init_train=1            ## 0= Load the previous train model from PathOutpu
 ```
 
 ## Usage (Interpretation model)
-To interpret the deep learning model enter "src" folder and run:
+To interpret the deep learning model, the users should change the directory to "src" folder and run:
 ```sh
 python main_interpret.py input [Interpretation Type]
 ```
