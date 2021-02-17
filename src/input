@@ -1,0 +1,8 @@
+cuda_visible_devices=0
+PathOutput=out_test/cls_spect_49/
+group=0
+n_model=3
+epochs=30
+batch_size=4
+fold=9
+init_train=1
