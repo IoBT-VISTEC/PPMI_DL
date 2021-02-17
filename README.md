@@ -33,9 +33,9 @@ pip install keras
 pip install shap
 ```
 ## Dataset
-The PPMI data can be downloaded directly from the website.
+The PPMI data can be requested directly from the website.
 
-https://www.ppmi-info.org/access-data-specimens/download-data/
+* PPMI (https://www.ppmi-info.org/access-data-specimens/download-data/)
 
 All the DICOM files should be placed in the folder name "dat_spect". This allow the program to read the data based on the csv file.
 
