@@ -26,7 +26,7 @@ def read_input():
     if group==0:
         group=['Control','PD']
     elif group==1:
-        group=['Control','SWEDD']
+        group=['PD','SWEDD']
 
     f.close()
     return device, PathOutput, group, n_model, epochs, batch_size, fold, init_train
