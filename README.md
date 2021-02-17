@@ -65,7 +65,7 @@ The interpretation types are:
 
 This program is used to load the already trained model to generate the 3D heatmap from the interpretation model.
 The program also analyzes some data to measure the performance of the interpretation model.
-The file name "input" can editted to specify several model parameters:
+The file name "input" can be editted to specify several model parameters:
 
 ```sh
 cuda_visible_devices=0  ## The GPU ID to be used
@@ -75,9 +75,10 @@ n_model=4               ## Model types 0 = PD-Net, 1= PD-Net + Batch Norm
 epochs=30               ## Number of epochs
 batch_size=4            ## Batch size for training
 fold=9                  ## Fold number from 10-fold of data to be tested
-init_train=1            ## Any number can be used because this will load the trained model.
+init_train=1            ## Any number can be used because this program can only load the saved model.
 ```
-**Remark** The parameters "group", "n_model" and "fold" must be consistent with the saved model. If these parameters are not consistent, the data that will be used to generate the heatmap may be the trained data and causing the bias in the interpretation results.
+**Remark:** The parameters "group", "n_model" must be the same with the saved model so that the interpretation method can select the same layer with the saved model. 
+**Remark:** The parameters "fold" must also be consistent with the saved model. This parameter will select the testing data that have not been used during the training.
 
 Dataset
 =======
