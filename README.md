@@ -18,17 +18,26 @@ The code needs **Python 3** to run.
 
 Python 3 package to be installed before running the code. 
 
+* nibabel
+* pydicom
 * tensorflow
 * keras
 * shap
 
 These package can be installed using the Python Package manager
 ```sh
+pip install nibabel
+pip install pydicom
 pip install tensorflow
 pip install keras
 pip install shap
 ```
+## Dataset
+The PPMI data can be downloaded directly from the website.
 
+https://www.ppmi-info.org/access-data-specimens/download-data/
+
+All the downloaded files should be place in the folder name "dat_spect". This allow the program to read the data based on the csv file.
 
 ## Usage (Training model)
 
@@ -79,12 +88,6 @@ init_train=1            ## Any number can be used because this program can
 ```
 **Remark:** The parameters "group", "n_model" must be the same with the saved model so that the interpretation method can select the same layer with the saved model. 
 **Remark:** The parameters "fold" must also be consistent with the saved model. This parameter will select the testing data that have not been used during the training.
-
-Dataset
-=======
-The PPMI data can be downloaded directly from the website.
-
-https://www.ppmi-info.org/access-data-specimens/download-data/
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Citing
