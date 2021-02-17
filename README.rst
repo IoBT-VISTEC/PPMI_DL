@@ -1,7 +1,7 @@
 Interpretation of PPMI
 ===========
 
-xxx
+The interpretation of PPMI dataset.
 
 
 Installation
@@ -29,11 +29,12 @@ xxx
 
 Dataset
 =======
-xxx
+The PPMI data can be downloaded directly from the website.
+
+https://www.ppmi-info.org/access-data-specimens/download-data/
 
 Citing
 ======
-xxx
 
   
 .. code-block:: bibtex
