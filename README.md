@@ -37,7 +37,7 @@ The PPMI data can be downloaded directly from the website.
 
 https://www.ppmi-info.org/access-data-specimens/download-data/
 
-All the downloaded files should be place in the folder name "dat_spect". This allow the program to read the data based on the csv file.
+All the DICOM files should be placed in the folder name "dat_spect". This allow the program to read the data based on the csv file.
 
 ## Usage (Training model)
 
