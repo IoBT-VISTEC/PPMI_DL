@@ -32,7 +32,7 @@ pip install shap
 
 ## Usage (Training model)
 
-To train or to test the deep learning model run:
+To train or to test the deep learning model enter the "src" folder and run:
 ```sh
 python main_cnn_svm.py input
 ```
@@ -51,7 +51,7 @@ init_train=1            ## 0= Load the previous train model from PathOutpu
 ```
 
 ## Usage (Interpretation model)
-To interpret the deep learning model run:
+To interpret the deep learning model enter "src" folder and run:
 ```sh
 python main_interpret.py input [Interpretation Type]
 ```
