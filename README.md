@@ -3,9 +3,9 @@
 
 ## Introduction
 
-This program is a python3 code to construct and interpret the deep learning model for the application of the Parkinson's disease diagnosis using SPECT image. 
+This program is a Python 3 code to construct and interpret the deep learning model for the application of the Parkinson's disease diagnosis using SPECT image. 
 The deep learning models were constructed based on the previous 3D-CNN architecture from various research articles. 
-User can edit and modify the model to improve the accuracy of the model. The interpretation methods were modified from 2D-CNN works to be applicable with 3D-images data.
+Users can edit and modify the model to improve the accuracy of the model. The interpretation methods were modified from 2D-CNN works to be applicable with 3D-images data.
 
 This code is divided into 2 parts:
 
@@ -40,14 +40,14 @@ python main_cnn_svm.py input
 The file name "input" can editted to specify several model parameters:
 
 ```sh
-cuda_visible_devices=0  ## The GPU ID to be used
-PathOutput=out_test/    ## The output directory of the saved model
-group=0                 ## The group to be train 0=["Control", "PD"] and 1=["PD", "SWEDD"]
-n_model=4               ## Model types 0 = PD-Net, 1= PD-Net + Batch Norm, 2= Deep PD-Net, 3= Deep PD-Net + Batch Norm
-epochs=30               ## Number of epochs
-batch_size=4            ## Batch size for training
-fold=9                  ## Fold number from 10-fold of data to be tested
-init_train=1            ## 0= Load the previous train model from PathOutput, 1= Train for new model
+cuda_visible_devices=0  ## The GPU ID to be used
+PathOutput=out_test/    ## The output directory of the saved model
+group=0                 ## The group to be train 0=["Control", "PD"] and 1=["PD", "SWEDD"]
+n_model=4               ## Model types 0 = PD-Net, 1= PD-Net + Batch Norm, 2= Deep PD-Net, 3= Deep PD-Net + Batch Norm
+epochs=30               ## Number of epochs
+batch_size=4            ## Batch size for training
+fold=9                  ## Fold number from 10-fold of data to be tested
+init_train=1            ## 0= Load the previous train model from PathOutput, 1= Train for new model
 ```
 
 ## Usage (Interpreting model)
@@ -63,6 +63,21 @@ The interpretation types are:
 * Saliency
 * SHAP
 
+This program is used to load the already trained model to generate the 3D heatmap from the interpretation model.
+The program also analyzes some data to measure the performance of the interpretation model.
+The file name "input" can editted to specify several model parameters:
+
+```sh
+cuda_visible_devices=0  ## The GPU ID to be used
+PathOutput=out_test/    ## The output directory of the saved model
+group=0                 ## The group to be train 0=["Control", "PD"] and 1=["PD", "SWEDD"]
+n_model=4               ## Model types 0 = PD-Net, 1= PD-Net + Batch Norm, 2= Deep PD-Net, 3= Deep PD-Net + Batch Norm
+epochs=30               ## Number of epochs
+batch_size=4            ## Batch size for training
+fold=9                  ## Fold number from 10-fold of data to be tested
+init_train=1            ## Any number can be used because this will load the trained model.
+```
+**Remark** The parameters "group", "n_model" and "fold" must be consistent with the saved model. If these parameters are not consistent, the data that will be used to generate the heatmap may be the trained data and causing the bias in the interpretation results.
 
 Dataset
 =======
