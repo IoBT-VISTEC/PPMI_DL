@@ -50,7 +50,7 @@ fold=9                  ## Fold number from 10-fold of data to be teste
 init_train=1            ## 0= Load the previous train model from PathOutput, 1= Train for new model
 ```
 
-## Usage (Interpreting model)
+## Usage (Interpretation model)
 To interpret the deep learning model run:
 ```sh
 python main_interpret.py input [Interpretation Type]
