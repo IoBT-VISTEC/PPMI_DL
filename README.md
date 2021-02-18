@@ -33,20 +33,20 @@ pip install keras
 pip install shap
 ```
 ## Dataset
-The PPMI data can be downloaded directly from the website.
+The PPMI data can be requested directly from the website.
 
-https://www.ppmi-info.org/access-data-specimens/download-data/
+* PPMI (https://www.ppmi-info.org/access-data-specimens/download-data/)
 
-All the downloaded files should be place in the folder name "dat_spect". This allow the program to read the data based on the csv file.
+The details of data used in this code is located in "dat_csv/SPECT_180430_4_30_2018.csv". All the DICOM files should be placed in the folder name "dat_spect". This allow the program to read the image data filename and labeling the data to match the details in CSV file.
 
 ## Usage (Training model)
 
-To train or to test the deep learning model enter the "src" folder and run:
+To train or to test the deep learning model, the users should enter the "src" folder and run:
 ```sh
 python main_cnn_svm.py input
 ```
 
-The file name "input" can editted to specify several model parameters:
+The file name "input" can be editted to specify several model parameters:
 
 ```sh
 cuda_visible_devices=0  ## The GPU ID to be used
@@ -60,7 +60,7 @@ init_train=1            ## 0= Load the previous train model from PathOutpu
 ```
 
 ## Usage (Interpretation model)
-To interpret the deep learning model enter "src" folder and run:
+To interpret the deep learning model, the users should change the directory to "src" folder and run:
 ```sh
 python main_interpret.py input [Interpretation Type]
 ```
@@ -87,6 +87,7 @@ fold=9                  ## Fold number from 10-fold of data to be teste
 init_train=1            ## Any number can be used because this program can only load the saved model.
 ```
 **Remark:** The parameters "group", "n_model" must be the same with the saved model so that the interpretation method can select the same layer with the saved model. 
+
 **Remark:** The parameters "fold" must also be consistent with the saved model. This parameter will select the testing data that have not been used during the training.
 
 <!-- ACKNOWLEDGEMENTS -->
