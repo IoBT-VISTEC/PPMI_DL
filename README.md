@@ -92,7 +92,7 @@ init_train=1            ## Any number can be used because this program can
 
 ## Usage for Linux user
 
-For linux users, the shell script is provided for training and testing for all 10-fold data. This shell script will automatically adjust all the input parameters. The shell script can be run by
+For linux users, the shell script is provided for training and interpreting for all 10-fold data. This shell script will automatically adjust all the input parameters. The shell script can be run by
 
 ```sh
 ./run_all.sh
