@@ -90,6 +90,14 @@ init_train=1            ## Any number can be used because this program can
 
 **Remark:** The parameters "fold" must also be consistent with the saved model. This parameter will select the testing data that have not been used during the training.
 
+## Usage for Linux user
+
+For linux users, the shell script is provided for training and testing for all 10-fold data. This shell script will automatically adjust all the input parameters. The shell script can be run by
+
+```sh
+./run_all.sh
+```
+
 <!-- ACKNOWLEDGEMENTS -->
 ## Citing
 
