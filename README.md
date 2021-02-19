@@ -37,7 +37,7 @@ The PPMI data can be requested directly from the website.
 
 * PPMI (https://www.ppmi-info.org/access-data-specimens/download-data/)
 
-The details of data used in this code is located in "dat_csv/SPECT_180430_4_30_2018.csv". All the DICOM files should be placed in the folder name "dat_spect". This allow the program to read the image data filename and labeling the data to match the details in CSV file.
+The details of data used in this code is located in [dat_csv/SPECT_180430_4_30_2018.csv](./dat_csv/SPECT_180430_4_30_2018.csv). All the DICOM files should be placed in the folder name "dat_spect". This allow the program to read the image data filename and labeling the data to match the details in CSV file.
 
 ## Usage (Training model)
 
@@ -102,11 +102,36 @@ For linux users, the shell script is provided for training and interpreting for 
 
 If you would like to apply this program to your applications or new models with these dataset, the details of each module are listed below:
 
-### gen_data.py
+### To modify deep learning model
 
-### gen_image.py
+The file [gen_model.py](./src/gen_model.py)
+```python
+def model_cnn3D_0(input_shape, dim, lr):
+    Input_img = Input(shape=input_shape, name='input1')
+    x = Conv3D(16, kernel_size=(7,7,7), strides=(4,4,4))(Input_img)
+    x = Activation('relu')(x)
+    x = MaxPooling3D(pool_size=(3,3,3), strides=(2,2,2) )(x)
 
-### gen_input.py
+    x = Conv3D(64, kernel_size=(5,5,5), strides=(1,1,1))(x)
+    x = Activation('relu')(x)
+    x = MaxPooling3D(pool_size=(3,3,3), strides=(2,2,2) )(x)
+
+    x = Conv3D(256, kernel_size=(2,3,2), strides=(1,1,1))(x)
+    x = Activation('relu')(x)
+
+    x = Flatten()(x)
+    x = Dense(256)(x)
+    x = Activation('relu')(x)
+    x = Dense(dim)(x)
+    main_output = Activation('softmax', name='main_output')(x)
+    
+    model = Model(inputs=Input_img, outputs=main_output)
+    
+    sgd = SGD(lr=lr, decay=0, momentum=0.9, nesterov=True)
+    model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=[ 'accuracy'])
+
+    return model 
+```
 
 
 <!-- ACKNOWLEDGEMENTS -->
