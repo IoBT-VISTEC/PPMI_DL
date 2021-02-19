@@ -154,7 +154,7 @@ if (interpret_name=='Grad-CAM'):
     Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)
 ```
 
-Next, the user needs to edit the file [gen_model.py](./src/gen_model.py) to include the new model. This is an example of the existing model in the present program. The interpretation model need to be adjusted so that the model becomes consistent with the deep learning model that will be used. An example from Grad-CAM is shown below. We introduce some parameter of the layer that will be needed for the analysis.
+Next, the user needs to edit the file [gen_interpret.py](./src/gen_interpret.py) to include the new model. This is an example of the existing model in the present program. The interpretation model need to be adjusted so that the model becomes consistent with the deep learning model that will be used. An example from Grad-CAM is shown below. We introduce some parameter of the layer that will be needed for the analysis.
 ```python
 def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name):
     if n_model==0 or n_model==1:
