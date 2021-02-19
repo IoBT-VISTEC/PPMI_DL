@@ -92,7 +92,7 @@ init_train=1            ## Any number can be used because this program can
 
 ## Usage for Linux user
 
-For linux users, the shell script is provided for training and interpreting for all 10-fold data. This shell script will automatically adjust all the input parameters. The shell script can be run by
+For linux user, the shell script is provided for training and interpreting for all 10-fold data. This shell script will automatically adjust all the input parameters. The shell script can be run by
 
 ```sh
 ./run_all.sh
@@ -100,11 +100,23 @@ For linux users, the shell script is provided for training and interpreting for 
 
 ## For Developer
 
-If you would like to apply this program to your applications or new models with these dataset, the details of each module are listed below:
+If you would like to apply this program to your applications or new models with these dataset, the details for editing each module are listed below. The program was written so that the user can add more new method to analyze the data.
 
-### To modify deep learning model
+### To add new deep learning model
+The user can edit the file [main_cnn_svm.py](./src/main_cnn_svm.py) to add more option for a new model to be used for 3D medical image data. Currently, we provide 4 models based on previous research for Parkinson's disease SPECT image.
 
-The file [gen_model.py](./src/gen_model.py)
+```python
+    if n_model==0:
+        model = gen_model.model_cnn3D_0(input_shape, dim, lr=lr)
+    elif n_model==1:
+        model = gen_model.model_cnn3D_1(input_shape, dim, lr=lr)
+    elif n_model==2:
+        model = gen_model.model_cnn3D_2(input_shape, dim, lr=lr)
+    elif n_model==3:
+        model = gen_model.model_cnn3D_3(input_shape, dim, lr=lr)
+```
+
+Next, the user needs to edit the file [gen_model.py](./src/gen_model.py) to include the new model. This is an example of the existing model in the present program.
 ```python
 def model_cnn3D_0(input_shape, dim, lr):
     Input_img = Input(shape=input_shape, name='input1')
@@ -133,6 +145,29 @@ def model_cnn3D_0(input_shape, dim, lr):
     return model 
 ```
 
+### To add new interpretation model
+The user can edit the file [main_cnn_svm.py](./src/main_cnn_svm.py) to add more option for a new interpretaion model to be used for this data. Currently, we have modified 6 interpretation methods to be applicable for 3D medical images.
+
+```python
+if (interpret_name=='Grad-CAM'):
+    preds = model.predict(Data_2)
+    Data_2_map=gen_interpret.inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name)
+```
+
+Next, the user needs to edit the file [gen_model.py](./src/gen_model.py) to include the new model. This is an example of the existing model in the present program. The interpretation model need to be adjusted so that the model becomes consistent with the deep learning model that will be used. An example from Grad-CAM is shown below. We introduce some parameter of the layer that will be needed for the analysis.
+```python
+def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_name):
+    if n_model==0 or n_model==1:
+        deeplift_layer0="input1_0"
+        deeplift_layer1="dense_2_0"
+        compile_guided_layer="activation_3"
+        grad_cam_layer="conv3d_2"
+    elif n_model==2 or n_model==3:
+        deeplift_layer0="input1_0"
+        deeplift_layer1="dense_2_0"
+        compile_guided_layer="activation_5"
+        grad_cam_layer="conv3d_4"
+```
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Citing
