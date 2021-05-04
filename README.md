@@ -172,4 +172,4 @@ def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_n
 <!-- ACKNOWLEDGEMENTS -->
 ## Citing
 
-* [Arxiv] (https://arxiv.org/abs/1908.11199)
+* [Under review]
