@@ -172,4 +172,4 @@ def inp_gradcam(PathOutput, Data_2, Labels_2, preds, n_model, model, interpret_n
 <!-- ACKNOWLEDGEMENTS -->
 ## Citing
 
-* [Under review]
+* @ARTICLE{9424574,  author={Pianpanit, Theerasarn and Lolak, Sermkiat and Sawangjai, Phattarapong and Sudhawiyangkul, Thapanun and Wilaiprasitporn, Theerawit},  journal={IEEE Sensors Journal},   title={Parkinson’s Disease Recognition Using SPECT Image and Interpretable AI: A Tutorial},   year={2021},  volume={},  number={},  pages={1-1},  doi={10.1109/JSEN.2021.3077949}}
